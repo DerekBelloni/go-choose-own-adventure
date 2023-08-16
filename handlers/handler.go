@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	// "fmt"
 	"fmt"
 	"net/http"
+	"text/template"
 )
 
 type Arc struct {
@@ -16,16 +18,37 @@ type Option struct {
 	Arc string `json:"arc"`
 }
 
+// I think I might need a handler for each arc
+// so maybe something like type IntroHandler struct, maybe it can be handed StoryData['intro']
 type AdventureHandler struct{
 	StoryData map[string]Arc
+	Template *template.Template
 }
 
+// type StoryArc struct{
+// 	ArcName string
+// 	Title string
+// 	Body []string
+// 	Options []Option
+// }
+
 func (ah AdventureHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Look at the request to see what part of the adventure the user has chosen and grab the appropriate data
-	// Hand back the template as well
-	for key, value := range ah.StoryData {
-		fmt.Printf("Story key: %s\nTitle: %s\nStory: %v\nOptions: %v\n", key, value.Title, value.Story, value.Options)
+
+	arcName := "intro"
+
+	// arcName := r.URL.Path
+
+	fmt.Println("request: ", r.URL.Path)
+
+	arc, found := ah.StoryData[arcName]
+	if !found {
+		http.NotFound(w, r)
+		return
 	}
 
-	fmt.Println("Hello World!")
+	err := ah.Template.Execute(w, arc)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }

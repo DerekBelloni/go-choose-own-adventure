@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"text/template"
 
 	"github.com/derekbelloni/go-choose-own-adventure/handlers"
 )
@@ -16,7 +17,15 @@ func main() {
 
 	storyData := unmarshalJson() 
 
-	mux.Handle("/", &handlers.AdventureHandler{StoryData: storyData})
+	tmpl, err := template.ParseFiles("./templates/arc.page.tmpl")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mux.Handle("/", &handlers.AdventureHandler{
+		StoryData: storyData,
+		Template: tmpl,
+	})
 
 	fmt.Println("Server listening on :8080")
 	http.ListenAndServe(":8080", mux)
