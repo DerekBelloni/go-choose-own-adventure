@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	// "fmt"
-	"fmt"
 	"net/http"
 	"text/template"
 )
@@ -18,29 +16,16 @@ type Option struct {
 	Arc string `json:"arc"`
 }
 
-// I think I might need a handler for each arc
-// so maybe something like type IntroHandler struct, maybe it can be handed StoryData['intro']
 type AdventureHandler struct{
+	ArcName string
 	StoryData map[string]Arc
 	Template *template.Template
 }
 
-// type StoryArc struct{
-// 	ArcName string
-// 	Title string
-// 	Body []string
-// 	Options []Option
-// }
 
 func (ah AdventureHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	arcName := "intro"
-
-	// arcName := r.URL.Path
-
-	fmt.Println("request: ", r.URL.Path)
-
-	arc, found := ah.StoryData[arcName]
+	arc, found := ah.StoryData[ah.ArcName]
 	if !found {
 		http.NotFound(w, r)
 		return

@@ -23,6 +23,37 @@ func main() {
 	}
 
 	mux.Handle("/", &handlers.AdventureHandler{
+		ArcName: "intro",
+		StoryData: storyData,
+		Template: tmpl,
+	})
+	mux.Handle("/new-york", &handlers.AdventureHandler{
+		ArcName: "new-york",
+		StoryData: storyData,
+		Template: tmpl,
+	})
+	mux.Handle("/debate", &handlers.AdventureHandler{
+		ArcName: "debate",
+		StoryData: storyData,
+		Template: tmpl,
+	})
+	mux.Handle("/sean-kelly", &handlers.AdventureHandler{
+		ArcName: "sean-kelly",
+		StoryData: storyData,
+		Template: tmpl,
+	})
+	mux.Handle("/mark-bates", &handlers.AdventureHandler{
+		ArcName: "mark-bates",
+		StoryData: storyData,
+		Template: tmpl,
+	})
+	mux.Handle("/denver", &handlers.AdventureHandler{
+		ArcName: "denver",
+		StoryData: storyData,
+		Template: tmpl,
+	})
+	mux.Handle("/home", &handlers.AdventureHandler{
+		ArcName: "home",
 		StoryData: storyData,
 		Template: tmpl,
 	})
